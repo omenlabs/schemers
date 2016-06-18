@@ -32,7 +32,7 @@
 		      (else
 		       (cons a (cdr l)))))))))]
       (R l))))
-		   
+
 (define depth*
   (λ (l)
     (cond
@@ -72,3 +72,44 @@
 			       (lm (car l))
 			       (lm (cdr l)))))))]
 	      (lm l)))))
+
+(define rm
+  (λ (a l oh)
+	(cond
+	 ((null? l) (oh 'no))
+	 ((atom? (car l))
+	  (if (eq? (car l) a)
+		  (cdr l)
+		  (cons (car l)
+				(rm a (cdr l) oh))))
+	 (else
+	  (if (atom?
+		   (let/cc oh
+				  (rm a (car l) oh)))
+		  (cons (car l)
+				(rm a (cdr l) oh))
+		  (cons (rm a (car l) 0)
+				(cdr l)))))))
+
+(define rember2*
+  (λ (a l)
+	(let [(newl (let/cc meh (rm a l meh)))]
+	  (if (atom? newl)
+		  l
+		  newl))))
+
+;; Oh, we don't have try.  Macro time!
+(define-syntax-rule
+  (try x α β)
+  (let/cc success
+		  (let/cc x  ;; if a calls x, we continue on from here, returning B
+				  (success α))  ;; jump up to success, returning the result of a
+		  β))
+
+;; So, if we don't find what we are looking for, we call oh.
+;; In this case, if we don't change the list, we call x which
+;; returns β.  If we do change the list, we hand that changed
+;; list off to success which returns it to us.
+(define rember3*
+  (λ (a l)
+	(try oh (rm a l oh) l)))
