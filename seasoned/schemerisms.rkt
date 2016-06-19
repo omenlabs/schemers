@@ -25,3 +25,14 @@
       ((or (atom? (car l1)) (atom? (car l2))) #f)
       (else
        (and (eqlist? (car l1) (car l2)) (eqlist? (cdr l1) (cdr l2)))))))
+
+(define member?
+  (λ (a lat)
+    (letrec
+        ((mem (λ (l)
+              (cond
+              ((null? l) #f)
+              ((eq? (car l) a) #t)
+              (else
+               (mem (cdr l)))))))
+    (mem lat))))
