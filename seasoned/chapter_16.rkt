@@ -38,7 +38,7 @@ ingredients
 	(cond
 	 ((zero? m) (quote pizza))
 	 (else
-	  (cons (deepM (sub1 m)) (quote ()))))))
+	  (cons (deep (sub1 m)) (quote ()))))))
 
 (define Ns '())
 (define Rs '())
@@ -161,7 +161,7 @@ ingredients
 (define length4
   (Y! L))
 
-
+;; Detour not in the book:
 ;; Can we take this further?
 ;; https://docs.racket-lang.org/reference/let.html
 
@@ -188,3 +188,33 @@ ingredients
 
 (define is-odd?
   (Y2 is-odd?f is-even?f))
+
+;; Back to the book, define depth for Y combination
+(define D*
+  (λ (d*)
+	(λ (l)
+	  (cond
+	   ((null? l) 1)
+	   ((atom? (car l)) (d* (cdr l)))
+	   (else
+		(let [(adep (add1 (d* (car l))))
+			  (ddep (d* (cdr l)))
+			  (max (λ (a b) (if (> a b) a b)))]
+		  (max ddep adep)))))))
+
+
+(define depth*
+  (Y! D*))
+
+(define biz
+  (let [(x 0)]
+	(λ (f)
+	  (set! x (add1 x))
+	  (λ (a)
+		(if (= a x)
+			0
+			(f a))))))
+
+
+((Y biz) 5)
+;;((Y! biz) 5)

@@ -36,3 +36,10 @@
               (else
                (mem (cdr l)))))))
     (mem lat))))
+
+(define Y
+  (λ (X)
+    ((λ (procedure)
+       (X (λ (arg) ((procedure procedure) arg))))
+     (λ (procedure)
+       (X (λ (arg) ((procedure procedure) arg)))))))
