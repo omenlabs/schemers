@@ -43,3 +43,14 @@
        (X (λ (arg) ((procedure procedure) arg))))
      (λ (procedure)
        (X (λ (arg) ((procedure procedure) arg)))))))
+
+(define find
+  (lambda (n indicies results)
+	(letrec
+		[(rfind (λ (ns rs)
+				  (cond
+				   ((null? ns) #f)
+				   ((eq? (car ns) n) (car rs))
+				   (else
+					(rfind (cdr ns) (cdr rs))))))]
+	  (rfind indicies results))))
