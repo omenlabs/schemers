@@ -54,3 +54,14 @@
 				   (else
 					(rfind (cdr ns) (cdr rs))))))]
 	  (rfind indicies results))))
+
+
+(define cons-counter '())
+(define cons-counter-reset '())
+(define cons-count
+  (let [(count 0)]
+    (set! cons-counter (λ () count))
+    (set! cons-counter-reset (λ () (set! count 0)))
+    (λ (a l)
+      (set! count (add1 count))
+      (cons a l))))
