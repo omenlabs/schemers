@@ -37,7 +37,7 @@
     (cond
      ((zero? m)
       (let ()
-	(set! toppnigs k)
+	(set! toppings k)
 	(k 'pizza)))
      (else
       (deep&coB (sub1 m)
@@ -56,7 +56,7 @@
     (lambda (lat)
       (cond
        ((null? lat) #f)
-       (else (W (cat lat) (cdr lat)))))))
+       (else (W (car lat) (cdr lat)))))))
 
 (define leave '())
 
@@ -70,8 +70,107 @@
 	(walk (car l))
 	(walk (cdr l)))))))
 
+(define start-it
+  (lambda (l)
+    (let/cc here
+	    (set! leave here)
+	    (walk l))))
 
-	    
+(define fishnchips '((potato) (chips (chips (with))) fish))
+
+(start-it fishnchips)
+
+(define fill '())
+(define waddle
+  (lambda (l)
+    (cond
+     ((null? l) '())
+     ((atom? (car l))
+      (begin
+	(let/cc rest
+		(set! fill rest)
+		(leave (car l)))
+	(waddle (cdr l))))
+     (else
+      (begin
+	(waddle (car l))
+	(waddle (cdr l)))))))
+
+(define start-it2
+  (lambda (l)
+    (let/cc here
+	    (set! leave here)
+	    (waddle l))))
+
+(start-it2 fishnchips)
+
+(define get-next
+  (lambda ()
+    (let/cc here-again
+	    (set! leave here-again)
+	    (fill))))
+
+(define get-first
+  (lambda (l)
+    (let/cc here
+	    (set! leave here)
+	    (waddle l)
+	    (leave '()))))
+
+(define ptwo-in-a-row*?
+  (lambda (l)
+    (let [(fst (get-first l))]
+      (if (atom? fst)
+	  (ptwo-in-a-row-b*? fst)
+	  #f))))
+
+(define ptwo-in-a-row-b*?
+  (lambda (a)
+    (let [(n (get-next))]
+      (if (atom? n)
+	  (or (eq? n a)
+	      (ptwo-in-a-row-b*? n))
+	  #f))))
+
+(define two-in-a-row*?
+  (letrec
+      [(T? (lambda (a)
+	     (let [(n (get-next))]
+	       (if (atom? n)
+		   (or (eq? n a)
+		       (T? n))
+		   #f))))
+       (get-next
+	(lambda ()
+	  (let/cc here-again
+		  (set! leave here-again)
+		  (fill))))
+       (fill (lambda (x) x))
+       (waddle
+	(lambda (l)
+	  (cond
+	   ((null? l) '())
+	   ((atom? (car l))
+	    (begin
+	      (let/cc rest
+		      (set! fill rest)
+		      (leave (car l)))
+	      (waddle (cdr l))))
+	   (else
+	    (begin
+	      (waddle (car l))
+	      (waddle (cdr l)))))))
+       (leave (lambda (x) x))]
+    (lambda (l)
+      (let [(fst (let/cc here
+			 (set! leave here)
+			 (waddle l)
+			 (leave '())))]
+	(if (atom? fst) (T? fst) #f)))))
+
+(two-in-a-row*? '(((food) ()) (((food)))))
+
+
 
      
      
