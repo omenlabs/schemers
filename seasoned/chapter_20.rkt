@@ -52,7 +52,7 @@
 (define unbox
   (lambda (box)
     (box (lambda (it set) it))))
-    
+
 
 (define the-meaning
   (lambda (e)
@@ -116,7 +116,7 @@
     (cond
      ((null? names) table)
      (else
-      (extend (car names) (car values) 
+      (extend (car names) (car values)
 	      (mult-extend (cdr names) (cdr values) table))))))
 
 (define odd?
@@ -144,8 +144,8 @@
      ((null? args) '())
      (else
       (lambda (val)
-	(cons val
-	      (evlis (cdr args) table)))
+		(cons val
+			  (evlis (cdr args) table)))
       (meaning (car args) table)))))
 
 (define :car
@@ -201,7 +201,7 @@
 	((eq? e #t) #t)
 	((eq? e #f) #f)
 	((eq? e 'cons) :cons)
-	((eq? e 'car) :car) 
+	((eq? e 'car) :car)
 	((eq? e 'cdr) :cdr)
 	((eq? e 'null?) :null?)
 	((eq? e 'eq?) :eq?)
@@ -243,6 +243,7 @@
 		     (name-of e)
 		     (box (a-prim skip))
 		     table)))))
+
 (define abort '())
 
 (define value
@@ -296,7 +297,7 @@
        ((eq? (car e) 'set!) *set)
        ((eq? (car e) 'cond) *cond)
        (else
-	*application)))
+		*application)))
      (else
       *application))))
 
@@ -352,6 +353,3 @@
 (define arguments-of
   (lambda (x)
     (cdr x)))
-
-
-			 
