@@ -4,4 +4,4 @@ These are scribbles made as I have been going through the schemers series for my
 
 * little is for [The Little Schemer](https://mitpress.mit.edu/books/little-schemer)
 * seasoned is for [The Seasoned Schemer](https://mitpress.mit.edu/books/seasoned-schemer)
-
+* reasoned is for [The Reasoned Schemer](https://mitpress.mit.edu/books/reasoned-schemer)
