@@ -1,0 +1,3 @@
+[submodule "reasoned/TheReasonedSchemer"]
+	path = reasoned/TheReasonedSchemer
+	url = git@github.com:omenlabs/TheReasonedSchemer.git

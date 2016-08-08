@@ -1,20 +1,11 @@
 #lang racket
 
-;; "[miniKanren] is a descendant of the language presented in
-;; Friedman, Byrd, and Kiselyov’s The Reasoned Schemer"
-;; - https://docs.racket-lang.org/minikanren/index.html
-(require minikanren)
-
-(define succeed (== #t #t))
-
-
-
-(define fail (== #t #f))
+(load "TheReasonedSchemer/mk.scm")
+(load "TheReasonedSchemer/mkextraforms.scm")
 
 (define show-print
   (lambda (x)
     (printf "~a is ~a ~n" x (eval x))))
-
 
 (define page 0)
 (define start-page
@@ -28,9 +19,6 @@
     (begin
       (set! page (add1 page))
       (printf "~n Page ~a~n" page))))
-
-
-
 
 (start-page 4)
 (show-print '(run* (q) fail))
@@ -121,4 +109,4 @@
 (show-print '(cond (#f #t) (else #f)))
 
 (next-page) ; page 11
-(show-print '(conde (fail succeed) (all fail)))
+(show-print '(conde (fail succeed) (else fail)))
